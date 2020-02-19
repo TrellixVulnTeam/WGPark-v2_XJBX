@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: WG Park
+  description: >-
+    Backend feito em Python/Flask para ser consumido por um frontend Angular, gerando um sistema de gerenciamento de estacionamento.
+  contact:
+    email: giovani.lima@everthefullstack.com.br
+  version: 0.0.1
+servers:
+  - url: '/'
+paths:
+  /carro/{pkcodcarro}:
+    get:
+      tags:
+        - carro
+      summary: Busca um carro pelo pkcodcarro
+      description: Retorna um único carro
+      operationId: get
+      parameters:
+        - name: pkcodcarro
+          in: path
+          description: ID do carro
+          required: true
+          schema:
+            type: integer
+            format: utf-8
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carro'
+        '400':
+          description: Id inválido
+        '404':
+          description: Id não consta no banco
+    post:
+      tags:
+        - carro
+      summary: Insere um carro no banco de dados
+      description: Insere um carro utilizando a placa e o modelo.
+      operationId: post
+      parameters:
+        - name: pkcodcarro
+          in: path
+          description: ID do carro
+          required: true
+          schema:
+            type: integer
+            format: utf-8
+        - name: placa
+          in: path
+          description: Placa do carro em questão
+          required: true
+          schema:
+            type: string
+            format: utf-8
+        - name: modelo
+          in: path
+          description: Modlo do carro em questão
+          required: true
+          schema:
+            type: string
+            format: utf-8
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carro'
+components:
+  schemas:
+    Carro:
+      type: object
+      properties:
+        pkcodcarro:
+          type: integer
+          format: utf-8
+        placa:
+          type: string
+          format: utf-8
+        modelo:
+          type: string
+          format: utf-8
