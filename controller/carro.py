@@ -1,38 +1,38 @@
 from flask_restful import Resource, reqparse
 from model.carro import CarroModel
 
+argumentos = reqparse.RequestParser()
+argumentos.add_argument('placa', type=str, required=True, help="Campo 'placa' não pode ser nulo.")
+argumentos.add_argument('modelo', type=str, required=True, help="Campo 'modelo' não pode ser nulo.")
+
 class CarroController(Resource):
 
-    argumentos = reqparse.RequestParser()
-    argumentos.add_argument('pkcodcarro', type=str, required=True, help="Campo 'pkcodcarro' não pode ser nulo.")
-    argumentos.add_argument('placa', type=str, required=True, help="Campo 'placa' não pode ser nulo.")
-    argumentos.add_argument('modelo', type=str, required=True, help="Campo 'modelo' não pode ser nulo.")
+    def get(self, placa):
 
-    def get(self):
-        
-        carro = CarroModel.read_carro()
-
+        carro = CarroModel.read_carro(placa)
         if carro:
             return {'message': carro.json()}
+            
+        return {'message': 'Carro not found'}, 404
 
-    def post(self):
+    def post(self, placa):
 
+        dados = argumentos.parse_args()
+        carro = CarroModel(**dados)
+        
         try:
 
-            dados = CarroController.argumentos.parse_args()
-            carro = CarroModel(**dados)
             carro.create_carro()
+            return{'message': carro.json()}
 
-            return {'message': carro.json()}
-        
         except Exception as erro:
-            
+
             return {'message': str(erro)}, 400
 
-    def put(self):
+    def put(self, placa):
 
         pass
 
-    def delete(self):
+    def delete(self, placa):
 
         pass

@@ -15,13 +15,15 @@ api = Api(app)
 #############################################################################################################
 @app.before_first_request
 def cria_banco():
+
     CarroModel.create_table()
     lista_config = config_swagger()    
     app.register_blueprint(lista_config[0], url_prefix=lista_config[1])
 
 #############################################################################################################
-api.add_resource(CarroController, '/carro')
+api.add_resource(CarroController, '/carro/<string:placa>')
 
 #############################################################################################################
 if __name__ == '__main__':
+    
     app.run(debug=True)

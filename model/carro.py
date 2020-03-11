@@ -1,23 +1,29 @@
+
+#from peewee import PrimaryKeyField, CharField, Model, SqliteDatabase
 from database.carro import CarroDb
+#db = SqliteDatabase('wgpark.db')
 
 class CarroModel(CarroDb):
-    
+
     def create_carro(self):
 
         try:
-            CarroModel.create()
+            self.save()
+            return {'message': 'carro criado com sucesso'}
         
         except Exception as erro:
             return {'message': str(erro)}
     
     @classmethod
-    def read_carro(cls):
+    def read_carro(cls, placa):
 
-        carro = cls.get_by_id(3)
-        if carro:
+        try:
+            carro = cls.select().where(cls.placa == placa).limit(1).get()
             return carro
 
-        return None
+        except:
+            
+            return None
 
     def update_carro(self):
         pass
@@ -26,6 +32,7 @@ class CarroModel(CarroDb):
         pass
      
     def json(self):
+
         return {
                 'pkcodcarro': self.pkcodcarro,
                 'placa': self.placa,
