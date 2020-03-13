@@ -10,10 +10,11 @@ class CarroController(Resource):
     def get(self, placa):
 
         carro = CarroModel.read_carro(placa)
+
         if carro:
             return {'message': carro.json()}
             
-        return {'message': 'Carro not found'}, 404
+        return {'message': 'Carro não encontrado!'}, 404
 
     def post(self, placa):
 
@@ -23,16 +24,26 @@ class CarroController(Resource):
         try:
 
             carro.create_carro()
-            return{'message': carro.json()}
+            return{'message': 'Carro cadastrado com sucesso!',
+                    'info': carro.json()}
 
         except Exception as erro:
-
             return {'message': str(erro)}, 400
 
     def put(self, placa):
 
-        pass
+        dados = argumentos.parse_args()
+        carro = CarroModel.read_carro(placa)
 
-    def delete(self, placa):
+        if carro:
+
+            carro.update_carro(**dados)
+            carro.create_carro()
+
+            return {'message': 'Carro editado com sucesso!'}
+
+        return {'message': 'Carro não encontrado!'}, 404
+
+    def delete(self):
 
         pass

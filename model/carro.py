@@ -1,9 +1,17 @@
 
-#from peewee import PrimaryKeyField, CharField, Model, SqliteDatabase
-from database.carro import CarroDb
-#db = SqliteDatabase('wgpark.db')
+from peewee import PrimaryKeyField, CharField, Model, SqliteDatabase
 
-class CarroModel(CarroDb):
+db = SqliteDatabase('wgpark.db')
+
+class CarroModel(Model):
+
+    pkcodcarro = PrimaryKeyField(null=False, primary_key=True)
+    placa = CharField(null=False)
+    modelo = CharField(null=False)
+    
+    class Meta:
+        database = db
+        table_name = 'TB_CarroModel'
 
     def create_carro(self):
 
@@ -17,16 +25,16 @@ class CarroModel(CarroDb):
     @classmethod
     def read_carro(cls, placa):
 
-        try:
-            carro = cls.select().where(cls.placa == placa).limit(1).get()
+        carro = cls.get_or_none(cls.placa == placa)
+        if carro:
             return carro
-
-        except:
             
-            return None
+        return None
 
-    def update_carro(self):
-        pass
+    def update_carro(self, placa, modelo):
+
+        self.placa = placa
+        self.modelo = modelo
 
     def delete_carro(self):
         pass
