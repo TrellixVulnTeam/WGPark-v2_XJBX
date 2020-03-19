@@ -17,7 +17,6 @@ class CarroModel(Model):
 
         try:
             self.save()
-            return {'message': 'carro criado com sucesso'}
         
         except Exception as erro:
             return {'message': str(erro)}
@@ -33,11 +32,18 @@ class CarroModel(Model):
 
     def update_carro(self, placa, modelo):
 
-        self.placa = placa
-        self.modelo = modelo
-
+        try:
+            self.placa = placa
+            self.modelo = modelo
+        except:
+            return None
+            
     def delete_carro(self):
-        pass
+        
+        try:
+            self.delete_instance()
+        except:
+            return None
      
     def json(self):
 

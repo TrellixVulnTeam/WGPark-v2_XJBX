@@ -44,6 +44,13 @@ class CarroController(Resource):
 
         return {'message': 'Carro não encontrado!'}, 404
 
-    def delete(self):
+    def delete(self, placa):
 
-        pass
+        carro = CarroModel.read_carro(placa)
+
+        if carro:
+            
+            carro.delete_carro()
+            return {'message': 'Carro deletado com sucesso!'}
+
+        return {'message': 'Carro não encontrado!'}, 404
