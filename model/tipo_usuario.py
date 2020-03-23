@@ -3,17 +3,16 @@ from peewee import PrimaryKeyField, CharField, FloatField, Model, SqliteDatabase
 
 db = SqliteDatabase('wgpark.db')
 
-class ValorModel(Model):
+class TipoUsuarioModel(Model):
 
-    pkcodvalor = PrimaryKeyField(null=False, primary_key=True)
+    pkcodtipo = PrimaryKeyField(null=False, primary_key=True)
     descricao = CharField(null=False)
-    valor = FloatField(null=False)
     
     class Meta:
         database = db
-        table_name = 'TB_ValorModel'
+        table_name = 'TB_TipoUsuarioModel'
 
-    def create_valor(self):
+    def create_tipo(self):
 
         try:
             self.save()
@@ -22,23 +21,22 @@ class ValorModel(Model):
             return {'message': str(erro)}
     
     @classmethod
-    def read_valor(cls, pkcodvalor):
+    def read_tipo(cls, descricao):
 
-        valor = cls.get_or_none(cls.pkcodvalor == pkcodvalor)
-        if valor:
-            return valor
+        tipo_usuario = cls.get_or_none(cls.descricao == descricao)
+        if tipo_usuario:
+            return tipo_usuario
             
         return None
 
-    def update_valor(self, descricao, valor):
+    def update_tipo(self, descricao):
 
         try:
             self.descricao = descricao
-            self.valor = valor
         except:
             return None
             
-    def delete_valor(self):
+    def delete_tipo(self):
         
         try:
             self.delete_instance()
@@ -48,7 +46,6 @@ class ValorModel(Model):
     def json(self):
 
         return {
-                'pkcodvalor': self.pkcodvalor,
-                'descricao': self.descricao,
-                'valor': self.valor
+                'pkcodtipo': self.pkcodtipo,
+                'descricao': self.descricao
                }
