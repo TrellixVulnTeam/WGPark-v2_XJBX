@@ -22,6 +22,15 @@ class CarroModel(Model):
             return {'message': str(erro)}
     
     @classmethod
+    def read_carros(cls):
+
+        carros = cls.select()
+        if carros:
+            return carros
+            
+        return None
+
+    @classmethod
     def read_carro(cls, placa):
 
         carro = cls.get_or_none(cls.placa == placa)

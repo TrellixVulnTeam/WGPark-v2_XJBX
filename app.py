@@ -3,7 +3,7 @@ from flask_restful import Api
 from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from config_swagger import config_swagger
-from controller.carro import CarroController
+from controller.carro import Carros, Carro
 from controller.valor import ValorController
 from controller.tipo_usuario import TipoUsuarioController
 from model.carro import CarroModel
@@ -27,7 +27,8 @@ def cria_banco():
     app.register_blueprint(lista_config[0], url_prefix=lista_config[1])
 
 #############################################################################################################
-api.add_resource(CarroController, '/carro/<string:placa>')
+api.add_resource(Carros, '/carros')
+api.add_resource(Carro, '/carro/<string:placa>')
 api.add_resource(ValorController, '/valor/<int:pkcodvalor>')
 api.add_resource(TipoUsuarioController, '/tipousuario/<string:descricao>')
 

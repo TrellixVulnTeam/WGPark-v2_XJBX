@@ -1,11 +1,53 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, ResponseBase
 from model.carro import CarroModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('placa', type=str, required=True, help="Campo 'placa' não pode ser nulo.")
 argumentos.add_argument('modelo', type=str, required=True, help="Campo 'modelo' não pode ser nulo.")
 
-class CarroController(Resource):
+class Carros(Resource):
+
+    def get(self):
+
+        lista_carros = []
+        carros = CarroModel.read_carros()
+        
+        if carros:
+
+            for carro in carros:
+    
+                lista_carros.append(carro.json())
+
+            return {'message': lista_carros}, 200
+            
+        return {'message': 'Carros não encontrados!'}, 500
+
+    def post(self):
+
+        dados = argumentos.parse_args()
+        carro = CarroModel(**dados)
+
+        if carro.read_carro(carro.placa):
+
+            response = ResponseBase(response={'Carro já existe na base de dados!'}, 
+                                    status=200, 
+                                    headers={'location': '/carro/'+carro.placa})
+            return response
+        
+        try:
+
+            carro.create_carro()
+            response = ResponseBase(response={'Carro criado com sucesso!'}, 
+                                    status=201, 
+                                    headers={'location':carro.placa})
+            return response
+
+        except Exception as erro:
+            response = ResponseBase(response={erro}, 
+                                    status=500)
+            return response
+
+class Carro(Resource):
 
     def get(self, placa):
 
@@ -14,21 +56,7 @@ class CarroController(Resource):
         if carro:
             return {'message': carro.json()}
             
-        return {'message': 'Carro não encontrado!'}, 404
-
-    def post(self, placa):
-
-        dados = argumentos.parse_args()
-        carro = CarroModel(**dados)
-        
-        try:
-
-            carro.create_carro()
-            return{'message': 'Carro cadastrado com sucesso!',
-                    'info': carro.json()}
-
-        except Exception as erro:
-            return {'message': str(erro)}, 400
+        return {'message': 'Carro não encontrado!'}, 500
 
     def put(self, placa):
 
