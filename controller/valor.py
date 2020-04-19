@@ -1,39 +1,67 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, ResponseBase
 from model.valor import ValorModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('descricao', type=str, required=True, help="Campo 'descricao' não pode ser nulo.")
 argumentos.add_argument('valor', type=str, required=True, help="Campo 'valor' não pode ser nulo.")
 
-class ValorController(Resource):
+class Valores(Resource):
 
-    def get(self, pkcodvalor):
+    def get(self):
 
-        valor = ValorModel.read_valor(pkcodvalor)
+        lista_valores = []
+        valores = ValorModel.read_valores()
 
-        if valor:
-            return {'message': valor.json()}
+        if valores:
+
+            for valor in valores:
+
+                lista_valores.append(valor.json())
+
+            return {'message': lista_valores}, 200
             
-        return {'message': 'Valor não encontrado!'}, 404
+        return {'message': 'Valores não encontrados!'}, 404
 
-    def post(self, pkcodvalor):
+    def post(self):
 
         dados = argumentos.parse_args()
         valor = ValorModel(**dados)
         
+        if valor.read_valor(valor.descricao):
+
+            response = ResponseBase(response={'Valor já existe na base de dados!'}, 
+                                    status=200, 
+                                    headers={'location': '/valor/'+ valor.descricao})
+            return response
+        
         try:
 
             valor.create_valor()
-            return{'message': 'Valor cadastrado com sucesso!',
-                    'info': valor.json()}
+            response = ResponseBase(response={'Carro criado com sucesso!'}, 
+                                    status=201, 
+                                    headers={'location':valor.descricao})
+            return response
 
         except Exception as erro:
-            return {'message': str(erro)}, 400
+            response = ResponseBase(response={erro}, 
+                                    status=500)
+            return response
 
-    def put(self, pkcodvalor):
+class Valor(Resource):
+
+    def get(self, descricao):
+
+        valor = ValorModel.read_valor(descricao)
+
+        if valor:
+            return {'message': valor.json()}
+        
+        return {'message': 'Valor não encontrado!'}, 404
+
+    def put(self, descricao):
 
         dados = argumentos.parse_args()
-        valor = ValorModel.read_valor(pkcodvalor)
+        valor = ValorModel.read_valor(descricao)
 
         if valor:
 
@@ -44,9 +72,9 @@ class ValorController(Resource):
 
         return {'message': 'Valor não encontrado!'}, 404
 
-    def delete(self, pkcodvalor):
+    def delete(self, descricao):
 
-        valor = ValorModel.read_valor(pkcodvalor)
+        valor = ValorModel.read_valor(descricao)
 
         if valor:
             

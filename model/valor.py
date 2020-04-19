@@ -18,13 +18,22 @@ class ValorModel(Model):
         try:
             self.save()
         
-        except Exception as erro:
-            return {'message': str(erro)}
+        except:
+            return None
     
     @classmethod
-    def read_valor(cls, pkcodvalor):
+    def read_valores(cls):
 
-        valor = cls.get_or_none(cls.pkcodvalor == pkcodvalor)
+        valores = cls.select()
+        if valores:
+            return valores
+            
+        return None
+
+    @classmethod
+    def read_valor(cls, descricao):
+
+        valor = cls.get_or_none(cls.descricao == descricao)
         if valor:
             return valor
             

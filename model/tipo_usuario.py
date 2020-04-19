@@ -21,6 +21,15 @@ class TipoUsuarioModel(Model):
             return {'message': str(erro)}
     
     @classmethod
+    def read_tipos(cls):
+
+        tipos = cls.select()
+        if tipos:
+            return tipos
+            
+        return None
+
+    @classmethod
     def read_tipo(cls, descricao):
 
         tipo_usuario = cls.get_or_none(cls.descricao == descricao)

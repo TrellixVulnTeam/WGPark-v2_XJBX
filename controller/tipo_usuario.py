@@ -1,10 +1,52 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, ResponseBase
 from model.tipo_usuario import TipoUsuarioModel
 
 argumentos = reqparse.RequestParser()
 argumentos.add_argument('descricao', type=str, required=True, help="Campo 'descricao' não pode ser nulo.")
 
-class TipoUsuarioController(Resource):
+class TipoUsuarios(Resource):
+
+    def get(self):
+
+        tipo_usuarios = []
+        tipos = TipoUsuarioModel.read_tipos()
+
+        if tipos:
+
+            for tipo in tipos:
+
+                tipo_usuarios.append(tipo.json())
+
+            return {'message': tipo_usuarios}, 200
+            
+        return {'message': 'TipoUsuarios não encontrados!'}, 404
+
+    def post(self):
+
+        dados = argumentos.parse_args()
+        tipo_usuario = TipoUsuarioModel(**dados)
+        
+        if tipo_usuario.read_tipo(tipo_usuario.descricao):
+
+            response = ResponseBase(response={'TipoUsuario já existe na base de dados!'}, 
+                                    status=200, 
+                                    headers={'location': '/valor/'+ tipo_usuario.descricao})
+            return response
+        
+        try:
+
+            tipo_usuario.create_tipo()
+            response = ResponseBase(response={'TipoUsuario criado com sucesso!'}, 
+                                    status=201, 
+                                    headers={'location':tipo_usuario.descricao})
+            return response
+
+        except Exception as erro:
+            response = ResponseBase(response={erro}, 
+                                    status=500)
+            return response
+
+class TipoUsuario(Resource):
 
     def get(self, descricao):
 
@@ -12,22 +54,8 @@ class TipoUsuarioController(Resource):
 
         if tipo_usuario:
             return {'message': tipo_usuario.json()}
-            
-        return {'message': 'TipoUsuario não encontrado!'}, 404
-
-    def post(self, descricao):
-
-        dados = argumentos.parse_args()
-        tipo_usuario = TipoUsuarioModel(**dados)
         
-        try:
-
-            tipo_usuario.create_tipo()
-            return{'message': 'TipoUsuario cadastrado com sucesso!',
-                    'info': tipo_usuario.json()}
-
-        except Exception as erro:
-            return {'message': str(erro)}, 400
+        return {'message': 'TipoUsuario não encontrado!'}, 404
 
     def put(self, descricao):
 

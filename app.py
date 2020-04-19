@@ -4,11 +4,12 @@ from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from config_swagger import config_swagger
 from controller.carro import Carros, Carro
-from controller.valor import ValorController
-from controller.tipo_usuario import TipoUsuarioController
+from controller.valor import Valores, Valor
+from controller.tipo_usuario import TipoUsuarios, TipoUsuario
 from model.carro import CarroModel
 from model.valor import ValorModel
 from model.tipo_usuario import TipoUsuarioModel
+
 
 #############################################################################################################
 app = Flask(__name__)
@@ -29,8 +30,10 @@ def cria_banco():
 #############################################################################################################
 api.add_resource(Carros, '/carros')
 api.add_resource(Carro, '/carro/<string:placa>')
-api.add_resource(ValorController, '/valor/<int:pkcodvalor>')
-api.add_resource(TipoUsuarioController, '/tipousuario/<string:descricao>')
+api.add_resource(Valores, '/valores')
+api.add_resource(Valor, '/valor/<string:descricao>')
+api.add_resource(TipoUsuarios, '/tipousuarios')
+api.add_resource(TipoUsuario, '/tipousuario/<string:descricao>')
 
 #############################################################################################################
 if __name__ == '__main__':

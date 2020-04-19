@@ -18,8 +18,8 @@ class CarroModel(Model):
         try:
             self.save()
         
-        except Exception as erro:
-            return {'message': str(erro)}
+        except:
+            return None
     
     @classmethod
     def read_carros(cls):

@@ -20,7 +20,7 @@ class Carros(Resource):
 
             return {'message': lista_carros}, 200
             
-        return {'message': 'Carros não encontrados!'}, 500
+        return {'message': 'Carros não encontrados!'}, 404
 
     def post(self):
 
@@ -50,13 +50,13 @@ class Carros(Resource):
 class Carro(Resource):
 
     def get(self, placa):
-
+        
         carro = CarroModel.read_carro(placa)
 
         if carro:
             return {'message': carro.json()}
             
-        return {'message': 'Carro não encontrado!'}, 500
+        return {'message': 'Carro não encontrado!'}, 404
 
     def put(self, placa):
 
