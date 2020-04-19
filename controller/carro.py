@@ -39,7 +39,7 @@ class Carros(Resource):
             carro.create_carro()
             response = ResponseBase(response={'Carro criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location':carro.placa})
+                                    headers={'location': '/carro/'+carro.placa})
             return response
 
         except Exception as erro:

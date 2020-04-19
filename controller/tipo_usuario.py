@@ -30,7 +30,7 @@ class TipoUsuarios(Resource):
 
             response = ResponseBase(response={'TipoUsuario já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/valor/'+ tipo_usuario.descricao})
+                                    headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
             return response
         
         try:
@@ -38,7 +38,7 @@ class TipoUsuarios(Resource):
             tipo_usuario.create_tipo()
             response = ResponseBase(response={'TipoUsuario criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location':tipo_usuario.descricao})
+                                    headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
             return response
 
         except Exception as erro:

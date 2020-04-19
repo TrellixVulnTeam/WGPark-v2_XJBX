@@ -39,7 +39,7 @@ class Valores(Resource):
             valor.create_valor()
             response = ResponseBase(response={'Carro criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location':valor.descricao})
+                                    headers={'location': '/valor/'+ valor.descricao})
             return response
 
         except Exception as erro:
