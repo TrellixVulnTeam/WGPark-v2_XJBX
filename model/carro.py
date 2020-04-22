@@ -17,6 +17,7 @@ class CarroModel(Model):
 
         try:
             self.save()
+            return True
         
         except:
             return None

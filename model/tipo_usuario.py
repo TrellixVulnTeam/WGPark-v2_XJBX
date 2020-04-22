@@ -1,5 +1,5 @@
 
-from peewee import PrimaryKeyField, CharField, FloatField, Model, SqliteDatabase
+from peewee import PrimaryKeyField, CharField, Model, SqliteDatabase
 
 db = SqliteDatabase('wgpark.db')
 
@@ -16,9 +16,10 @@ class TipoUsuarioModel(Model):
 
         try:
             self.save()
+            return True
         
-        except Exception as erro:
-            return {'message': str(erro)}
+        except:
+            return None
     
     @classmethod
     def read_tipos(cls):

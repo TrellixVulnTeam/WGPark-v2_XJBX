@@ -28,22 +28,19 @@ class Valores(Resource):
         valor = ValorModel(**dados)
         
         if valor.read_valor(valor.descricao):
-
             response = ResponseBase(response={'Valor já existe na base de dados!'}, 
                                     status=200, 
                                     headers={'location': '/valor/'+ valor.descricao})
             return response
         
-        try:
-
-            valor.create_valor()
-            response = ResponseBase(response={'Carro criado com sucesso!'}, 
+        if valor.create_valor():
+            response = ResponseBase(response={'Valor criado com sucesso!'}, 
                                     status=201, 
                                     headers={'location': '/valor/'+ valor.descricao})
             return response
 
-        except Exception as erro:
-            response = ResponseBase(response={erro}, 
+        else:
+            response = ResponseBase(response={'Erro ao salvar Valor!'}, 
                                     status=500)
             return response
 

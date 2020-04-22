@@ -33,16 +33,14 @@ class TipoUsuarios(Resource):
                                     headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
             return response
         
-        try:
-
-            tipo_usuario.create_tipo()
+        if tipo_usuario.create_tipo():
             response = ResponseBase(response={'TipoUsuario criado com sucesso!'}, 
                                     status=201, 
                                     headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
             return response
 
-        except Exception as erro:
-            response = ResponseBase(response={erro}, 
+        else:
+            response = ResponseBase(response={'Erro ao salvar TipoUsuario!'}, 
                                     status=500)
             return response
 
