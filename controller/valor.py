@@ -63,7 +63,6 @@ class Valor(Resource):
         if valor:
 
             valor.update_valor(**dados)
-            valor.create_valor()
 
             return {'message': 'Valor editado com sucesso!'}
 

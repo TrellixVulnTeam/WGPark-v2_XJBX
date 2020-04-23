@@ -25,7 +25,7 @@ class TipoUsuarios(Resource):
 
         dados = argumentos.parse_args()
         tipo_usuario = TipoUsuarioModel(**dados)
-        
+
         if tipo_usuario.read_tipo(tipo_usuario.descricao):
 
             response = ResponseBase(response={'TipoUsuario já existe na base de dados!'}, 
@@ -63,8 +63,7 @@ class TipoUsuario(Resource):
         if tipo_usuario:
 
             tipo_usuario.update_tipo(**dados)
-            tipo_usuario.create_tipo()
-
+            
             return {'message': 'TipoUsuario editado com sucesso!'}
 
         return {'message': 'TipoUsuario não encontrado!'}, 404

@@ -15,7 +15,7 @@ class TipoUsuarioModel(Model):
     def create_tipo(self):
 
         try:
-            self.save()
+            self.save(force_insert=True)
             return True
         
         except:
@@ -43,6 +43,7 @@ class TipoUsuarioModel(Model):
 
         try:
             self.descricao = descricao
+            self.save()
         except:
             return None
             

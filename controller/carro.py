@@ -64,7 +64,6 @@ class Carro(Resource):
         if carro:
 
             carro.update_carro(**dados)
-            carro.create_carro()
 
             return {'message': 'Carro editado com sucesso!'}
 

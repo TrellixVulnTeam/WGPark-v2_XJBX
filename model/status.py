@@ -6,7 +6,7 @@ db = SqliteDatabase('wgpark.db')
 class StatusModel(Model):
 
     pkcodstatus = PrimaryKeyField(null=False, primary_key=True)
-    status = CharField()
+    status = CharField(null=False, constraints=[Check("status = 'O' or status = 'C'")])
     
     class Meta:
         database = db
@@ -16,7 +16,7 @@ class StatusModel(Model):
     def create_status(self):
 
         try:
-            self.save()
+            self.save(force_insert=True)
             return True
 
         except:

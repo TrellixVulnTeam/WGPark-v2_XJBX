@@ -16,7 +16,7 @@ class CarroModel(Model):
     def create_carro(self):
 
         try:
-            self.save()
+            self.save(force_insert=True)
             return True
         
         except:
@@ -45,6 +45,7 @@ class CarroModel(Model):
         try:
             self.placa = placa
             self.modelo = modelo
+            self.save()
         except:
             return None
             

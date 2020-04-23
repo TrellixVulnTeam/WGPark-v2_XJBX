@@ -16,7 +16,7 @@ class ValorModel(Model):
     def create_valor(self):
 
         try:
-            self.save()
+            self.save(force_insert=True)
             return True
         
         except:
@@ -45,6 +45,7 @@ class ValorModel(Model):
         try:
             self.descricao = descricao
             self.valor = valor
+            self.save()
         except:
             return None
             
