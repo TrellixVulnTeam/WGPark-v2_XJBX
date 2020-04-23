@@ -8,11 +8,13 @@ from controller.valor import Valores, Valor
 from controller.tipo_usuario import TipoUsuarios, TipoUsuario
 from controller.status import StatusList, Status
 from controller.usuario import Usuarios, Usuario
+from controller.servico import Servicos, Servico
 from model.carro import CarroModel
 from model.valor import ValorModel
 from model.tipo_usuario import TipoUsuarioModel
 from model.status import StatusModel
 from model.usuario import UsuarioModel
+from model.servico import ServicoModel
 
 
 #############################################################################################################
@@ -30,6 +32,7 @@ def cria_banco():
     TipoUsuarioModel.create_table()
     StatusModel.create_table()
     UsuarioModel.create_table()
+    ServicoModel.create_table()
     lista_config = config_swagger()    
     app.register_blueprint(lista_config[0], url_prefix=lista_config[1])
 
@@ -44,6 +47,8 @@ api.add_resource(StatusList, '/statuslist')
 api.add_resource(Status, '/status/<string:status>')
 api.add_resource(Usuarios, '/usuarios')
 api.add_resource(Usuario, '/usuario/<string:cpf>')
+api.add_resource(Servicos, '/servicos')
+api.add_resource(Servico, '/servico/<string:descricao>')
 #############################################################################################################
 if __name__ == '__main__':
     
