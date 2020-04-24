@@ -31,7 +31,6 @@ class Servicos(Resource):
         servico = ServicoModel(**dados)
 
         if servico.read_servico(servico.descricao):
-
             response = ResponseBase(response={'Servico já existe na base de dados!'}, 
                                     status=200, 
                                     headers={'location': '/servico/'+servico.descricao})
