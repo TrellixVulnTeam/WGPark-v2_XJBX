@@ -6,7 +6,7 @@ db = SqliteDatabase('wgpark.db')
 class CarroModel(Model):
 
     pkcodcarro = PrimaryKeyField(null=False, primary_key=True)
-    placa = CharField(null=False)
+    placa = CharField(null=False, unique=True)
     modelo = CharField(null=False)
     
     class Meta:

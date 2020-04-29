@@ -31,11 +31,20 @@ class UsuarioModel(Model):
             return usuarios
             
         return None
+    
+    @classmethod
+    def read_usuario_before_post(cls, cpf):
+
+        usuario = cls.get_or_none(cls.cpf == cpf)
+        if usuario:
+            return usuario
+            
+        return None
 
     @classmethod
-    def read_usuario(cls, pkcodvalor):
+    def read_usuario(cls, pkcodusuario):
 
-        usuario = cls.get_or_none(cls.pkcodvalor == pkcodvalor)
+        usuario = cls.get_or_none(cls.pkcodusuario == pkcodusuario)
         if usuario:
             return usuario
             

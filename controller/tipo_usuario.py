@@ -25,18 +25,17 @@ class TipoUsuarios(Resource):
 
         dados = argumentos.parse_args()
         tipo_usuario = TipoUsuarioModel(**dados)
-
-        if tipo_usuario.read_tipo(tipo_usuario.pkcodtipo):
+        if tipo_usuario.read_tipo_usuario_before_post(tipo_usuario.descricao):
 
             response = ResponseBase(response={'TipoUsuario já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/tipousuario/'+ tipo_usuario.pkcodtipo})
+                                    headers={'location': '/tipousuario/'+ str(tipo_usuario.read_tipo_usuario_before_post(tipo_usuario.descricao))})
             return response
         
         if tipo_usuario.create_tipo():
             response = ResponseBase(response={'TipoUsuario criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/tipousuario/'+ tipo_usuario.pkcodtipo})
+                                    headers={'location': '/tipousuario/'+ str(tipo_usuario.pkcodtipo)})
             return response
 
         else:

@@ -30,16 +30,16 @@ class Servicos(Resource):
         dados = argumentos.parse_args()
         servico = ServicoModel(**dados)
 
-        if servico.read_servico(servico.pkcodservico):
+        if servico.read_servico_before_post(servico.descricao):
             response = ResponseBase(response={'Servico já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/servico/'+servico.pkcodservico})
+                                    headers={'location': '/servico/' + str(servico.read_servico_before_post(servico.descricao))})
             return response
         
         if servico.create_servico():
             response = ResponseBase(response={'Servico criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/servico/'+servico.pkcodservico})
+                                    headers={'location': '/servico/' + str(servico.pkcodservico)})
             return response
 
         else:

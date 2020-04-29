@@ -10,7 +10,7 @@ db = SqliteDatabase('wgpark.db', pragmas={'foreign_keys': 1})
 class ServicoModel(Model):
 
     pkcodservico = PrimaryKeyField(null=False, primary_key=True)
-    descricao = CharField(null=False)
+    descricao = CharField(null=False, unique=True)
     fkcodcarro = ForeignKeyField(CarroModel, null=False)
     fkcodvalor = ForeignKeyField(ValorModel, null=False)
     fkcodusuario = ForeignKeyField(UsuarioModel, null=False)
@@ -35,6 +35,15 @@ class ServicoModel(Model):
         servicos = cls.select()
         if servicos:
             return servicos
+            
+        return None
+
+    @classmethod
+    def read_servico_before_post(cls, descricao):
+
+        servico = cls.get_or_none(cls.descricao == descricao)
+        if servico:
+            return servico
             
         return None
 

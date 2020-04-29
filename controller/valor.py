@@ -26,11 +26,12 @@ class Valores(Resource):
 
         dados = argumentos.parse_args()
         valor = ValorModel(**dados)
-        
-        if valor.read_valor(valor.pkcodvalor):
+
+        if valor.read_valor_before_post(valor.descricao):
+           
             response = ResponseBase(response={'Valor já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/valor/' + str(valor.pkcodvalor)})
+                                    headers={'location': '/valor/' + str(valor.read_valor_before_post(valor.descricao))})
             return response
         
         if valor.create_valor():

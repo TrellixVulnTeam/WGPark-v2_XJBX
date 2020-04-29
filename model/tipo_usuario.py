@@ -6,7 +6,7 @@ db = SqliteDatabase('wgpark.db')
 class TipoUsuarioModel(Model):
 
     pkcodtipo = PrimaryKeyField(null=False, primary_key=True)
-    descricao = CharField(null=False)
+    descricao = CharField(null=False, unique=True)
     
     class Meta:
         database = db
@@ -27,6 +27,15 @@ class TipoUsuarioModel(Model):
         tipos = cls.select()
         if tipos:
             return tipos
+            
+        return None
+
+    @classmethod
+    def read_tipo_usuario_before_post(cls, descricao):
+
+        tipo_usuario = cls.get_or_none(cls.descricao == descricao)
+        if tipo_usuario:
+            return tipo_usuario
             
         return None
 

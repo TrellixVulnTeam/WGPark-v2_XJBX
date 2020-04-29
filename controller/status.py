@@ -2,7 +2,7 @@ from flask_restful import Resource, reqparse, ResponseBase
 from model.status import StatusModel
 
 argumentos = reqparse.RequestParser()
-argumentos.add_argument('status', type=str, required=True, help="'Status' não pode ser nulo.")
+argumentos.add_argument('descricao', type=str, required=True, help="'Status' não pode ser nulo.")
 
 class StatusList(Resource):
 
@@ -24,18 +24,18 @@ class StatusList(Resource):
 
         dados = argumentos.parse_args()
         status = StatusModel(**dados)
-
-        if status.read_status(status.pkcodstatus):
+        
+        if status.read_status_before_post(status.descricao):
 
             response = ResponseBase(response={'Status já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/status/'+ status.pkcodstatus})
+                                    headers={'location': '/status/' + str(status.read_status_before_post(status.descricao))})
             return response
         
         if status.create_status():
             response = ResponseBase(response={'Status criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/status/'+ status.pkcodstatus})
+                                    headers={'location': '/status/' + str(status.pkcodstatus)})
             return response
 
         else:

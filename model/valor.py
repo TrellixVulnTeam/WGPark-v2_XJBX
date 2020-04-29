@@ -6,7 +6,7 @@ db = SqliteDatabase('wgpark.db')
 class ValorModel(Model):
 
     pkcodvalor = PrimaryKeyField(null=False, primary_key=True)
-    descricao = CharField(null=False)
+    descricao = CharField(null=False, unique=True)
     valor = FloatField(null=False)
     
     class Meta:
@@ -28,6 +28,15 @@ class ValorModel(Model):
         valores = cls.select()
         if valores:
             return valores
+            
+        return None
+
+    @classmethod
+    def read_valor_before_post(cls, descricao):
+
+        valor = cls.get_or_none(cls.descricao == descricao)
+        if valor:
+            return valor
             
         return None
 

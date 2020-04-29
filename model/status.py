@@ -6,12 +6,12 @@ db = SqliteDatabase('wgpark.db')
 class StatusModel(Model):
 
     pkcodstatus = PrimaryKeyField(null=False, primary_key=True)
-    status = CharField(null=False, constraints=[Check("status = 'O' or status = 'C'")])
+    descricao = CharField(null=False, unique=True)
     
     class Meta:
         database = db
         table_name = 'TB_StatusModel'
-        constraints=[Check("status = upper('o') OR status = upper('c')")]
+        constraints=[Check("descricao = upper('o') OR descricao = upper('c')")]
 
     def create_status(self):
 
@@ -27,6 +27,15 @@ class StatusModel(Model):
 
         status = cls.select()
         
+        if status:
+            return status
+            
+        return None
+
+    @classmethod
+    def read_status_before_post(cls, descricao):
+
+        status = cls.get_or_none(cls.descricao == descricao)
         if status:
             return status
             
@@ -53,5 +62,5 @@ class StatusModel(Model):
 
         return {
                 'pkcodstatus': self.pkcodstatus,
-                'status': self.status
+                'descricao': self.descricao
                }
