@@ -33,9 +33,9 @@ class UsuarioModel(Model):
         return None
 
     @classmethod
-    def read_usuario(cls, cpf):
+    def read_usuario(cls, pkcodvalor):
 
-        usuario = cls.get_or_none(cls.cpf == cpf)
+        usuario = cls.get_or_none(cls.pkcodvalor == pkcodvalor)
         if usuario:
             return usuario
             

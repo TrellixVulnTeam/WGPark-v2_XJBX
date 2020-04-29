@@ -30,16 +30,16 @@ class Servicos(Resource):
         dados = argumentos.parse_args()
         servico = ServicoModel(**dados)
 
-        if servico.read_servico(servico.descricao):
+        if servico.read_servico(servico.pkcodservico):
             response = ResponseBase(response={'Servico já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/servico/'+servico.descricao})
+                                    headers={'location': '/servico/'+servico.pkcodservico})
             return response
         
         if servico.create_servico():
             response = ResponseBase(response={'Servico criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/servico/'+servico.descricao})
+                                    headers={'location': '/servico/'+servico.pkcodservico})
             return response
 
         else:
@@ -49,19 +49,19 @@ class Servicos(Resource):
 
 class Servico(Resource):
 
-    def get(self, descricao):
+    def get(self, pkcodservico):
         
-        servico = ServicoModel.read_servico(descricao)
+        servico = ServicoModel.read_servico(pkcodservico)
 
         if servico:
             return {'message': servico.json()}
             
         return {'message': 'Servico não encontrado!'}, 404
 
-    def put(self, descricao):
+    def put(self, pkcodservico):
 
         dados = argumentos.parse_args()
-        servico = ServicoModel.read_servico(descricao)
+        servico = ServicoModel.read_servico(pkcodservico)
 
         if servico:
 
@@ -70,9 +70,9 @@ class Servico(Resource):
 
         return {'message': 'Servico não encontrado!'}, 404
 
-    def delete(self, descricao):
+    def delete(self, pkcodservico):
 
-        servico = ServicoModel.read_servico(descricao)
+        servico = ServicoModel.read_servico(pkcodservico)
 
         if servico:
             

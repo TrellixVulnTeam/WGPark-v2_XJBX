@@ -31,15 +31,15 @@ class TipoUsuarioModel(Model):
         return None
 
     @classmethod
-    def read_tipo(cls, descricao):
+    def read_tipo(cls, pkcodtipo):
 
-        tipo_usuario = cls.get_or_none(cls.descricao == descricao)
+        tipo_usuario = cls.get_or_none(cls.pkcodtipo == pkcodtipo)
         if tipo_usuario:
             return tipo_usuario
             
         return None
 
-    def update_tipo(self, descricao):
+    def update_tipo(self, pkcodtipo):
 
         try:
             self.descricao = descricao

@@ -29,17 +29,17 @@ class Usuarios(Resource):
         dados = argumentos.parse_args()
         usuario = UsuarioModel(**dados)
 
-        if usuario.read_usuario(usuario.cpf):
+        if usuario.read_usuario(usuario.pkcodusuario):
 
             response = ResponseBase(response={'Usuario já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/usuario/'+usuario.cpf})
+                                    headers={'location': '/usuario/'+usuario.pkcodusuario})
             return response
         
         if usuario.create_usuario():
             response = ResponseBase(response={'Usuario criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/usuario/'+usuario.cpf})
+                                    headers={'location': '/usuario/'+usuario.pkcodusuario})
             return response
 
         else:
@@ -49,19 +49,19 @@ class Usuarios(Resource):
 
 class Usuario(Resource):
 
-    def get(self, cpf):
+    def get(self, pkcodvalor):
         
-        usuario = UsuarioModel.read_usuario(cpf)
+        usuario = UsuarioModel.read_usuario(pkcodvalor)
 
         if usuario:
             return {'message': usuario.json()}
             
         return {'message': 'Usuario não encontrado!'}, 404
 
-    def put(self, cpf):
+    def put(self, pkcodvalor):
 
         dados = argumentos.parse_args()
-        usuario = UsuarioModel.read_usuario(cpf)
+        usuario = UsuarioModel.read_usuario(pkcodvalor)
 
         if usuario:
 
@@ -70,9 +70,9 @@ class Usuario(Resource):
 
         return {'message': 'Usuario não encontrado!'}, 404
 
-    def delete(self, cpf):
+    def delete(self, pkcodvalor):
 
-        usuario = UsuarioModel.read_usuario(cpf)
+        usuario = UsuarioModel.read_usuario(pkcodvalor)
 
         if usuario:
             

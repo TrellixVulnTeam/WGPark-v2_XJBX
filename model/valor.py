@@ -32,9 +32,9 @@ class ValorModel(Model):
         return None
 
     @classmethod
-    def read_valor(cls, descricao):
+    def read_valor(cls, pkcodvalor):
 
-        valor = cls.get_or_none(cls.descricao == descricao)
+        valor = cls.get_or_none(cls.pkcodvalor == pkcodvalor)
         if valor:
             return valor
             

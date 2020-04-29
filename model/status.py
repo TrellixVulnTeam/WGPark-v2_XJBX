@@ -33,9 +33,9 @@ class StatusModel(Model):
         return None
 
     @classmethod
-    def read_status(cls, status):
+    def read_status(cls, pkcodstatus):
 
-        status = cls.get_or_none(cls.status == status)
+        status = cls.get_or_none(cls.pkcodstatus == pkcodstatus)
 
         if status:
             return status

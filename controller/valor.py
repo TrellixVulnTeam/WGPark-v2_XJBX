@@ -27,16 +27,16 @@ class Valores(Resource):
         dados = argumentos.parse_args()
         valor = ValorModel(**dados)
         
-        if valor.read_valor(valor.descricao):
+        if valor.read_valor(valor.pkcodvalor):
             response = ResponseBase(response={'Valor já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/valor/'+ valor.descricao})
+                                    headers={'location': '/valor/' + str(valor.pkcodvalor)})
             return response
         
         if valor.create_valor():
             response = ResponseBase(response={'Valor criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/valor/'+ valor.descricao})
+                                    headers={'location': '/valor/' + str(valor.pkcodvalor)})
             return response
 
         else:
@@ -46,19 +46,19 @@ class Valores(Resource):
 
 class Valor(Resource):
 
-    def get(self, descricao):
+    def get(self, pkcodvalor):
 
-        valor = ValorModel.read_valor(descricao)
+        valor = ValorModel.read_valor(pkcodvalor)
 
         if valor:
             return {'message': valor.json()}
         
         return {'message': 'Valor não encontrado!'}, 404
 
-    def put(self, descricao):
+    def put(self, pkcodvalor):
 
         dados = argumentos.parse_args()
-        valor = ValorModel.read_valor(descricao)
+        valor = ValorModel.read_valor(pkcodvalor)
 
         if valor:
 
@@ -68,9 +68,9 @@ class Valor(Resource):
 
         return {'message': 'Valor não encontrado!'}, 404
 
-    def delete(self, descricao):
+    def delete(self, pkcodvalor):
 
-        valor = ValorModel.read_valor(descricao)
+        valor = ValorModel.read_valor(pkcodvalor)
 
         if valor:
             

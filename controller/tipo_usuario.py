@@ -26,17 +26,17 @@ class TipoUsuarios(Resource):
         dados = argumentos.parse_args()
         tipo_usuario = TipoUsuarioModel(**dados)
 
-        if tipo_usuario.read_tipo(tipo_usuario.descricao):
+        if tipo_usuario.read_tipo(tipo_usuario.pkcodtipo):
 
             response = ResponseBase(response={'TipoUsuario já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
+                                    headers={'location': '/tipousuario/'+ tipo_usuario.pkcodtipo})
             return response
         
         if tipo_usuario.create_tipo():
             response = ResponseBase(response={'TipoUsuario criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/tipousuario/'+ tipo_usuario.descricao})
+                                    headers={'location': '/tipousuario/'+ tipo_usuario.pkcodtipo})
             return response
 
         else:
@@ -46,19 +46,19 @@ class TipoUsuarios(Resource):
 
 class TipoUsuario(Resource):
 
-    def get(self, descricao):
+    def get(self, pkcodtipo):
 
-        tipo_usuario = TipoUsuarioModel.read_tipo(descricao)
+        tipo_usuario = TipoUsuarioModel.read_tipo(pkcodtipo)
 
         if tipo_usuario:
             return {'message': tipo_usuario.json()}
         
         return {'message': 'TipoUsuario não encontrado!'}, 404
 
-    def put(self, descricao):
+    def put(self, pkcodtipo):
 
         dados = argumentos.parse_args()
-        tipo_usuario = TipoUsuarioModel.read_tipo(descricao)
+        tipo_usuario = TipoUsuarioModel.read_tipo(pkcodtipo)
 
         if tipo_usuario:
 
@@ -68,9 +68,9 @@ class TipoUsuario(Resource):
 
         return {'message': 'TipoUsuario não encontrado!'}, 404
 
-    def delete(self, descricao):
+    def delete(self, pkcodtipo):
 
-        tipo_usuario = TipoUsuarioModel.read_tipo(descricao)
+        tipo_usuario = TipoUsuarioModel.read_tipo(pkcodtipo)
 
         if tipo_usuario:
             

@@ -24,19 +24,18 @@ class StatusList(Resource):
 
         dados = argumentos.parse_args()
         status = StatusModel(**dados)
-        status.status = status.status.upper()
 
-        if status.read_status(status.status):
+        if status.read_status(status.pkcodstatus):
 
             response = ResponseBase(response={'Status já existe na base de dados!'}, 
                                     status=200, 
-                                    headers={'location': '/status/'+ status.status})
+                                    headers={'location': '/status/'+ status.pkcodstatus})
             return response
         
         if status.create_status():
             response = ResponseBase(response={'Status criado com sucesso!'}, 
                                     status=201, 
-                                    headers={'location': '/status/'+ status.status})
+                                    headers={'location': '/status/'+ status.pkcodstatus})
             return response
 
         else:
@@ -46,18 +45,18 @@ class StatusList(Resource):
 
 class Status(Resource):
 
-    def get(self, status):
+    def get(self, pkcodstatus):
         
-        status = StatusModel.read_status(status.upper())
+        status = StatusModel.read_status(pkcodstatus)
 
         if status:
             return {'message': status.json()}
         
         return {'message': 'Status não encontrado!'}, 404
 
-    def delete(self, status):
+    def delete(self, pkcodstatus):
 
-        status = StatusModel.read_status(status.upper())
+        status = StatusModel.read_status(pkcodstatus)
 
         if status:
             status.delete_status()

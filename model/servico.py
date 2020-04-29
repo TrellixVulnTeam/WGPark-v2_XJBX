@@ -39,9 +39,9 @@ class ServicoModel(Model):
         return None
 
     @classmethod
-    def read_servico(cls, descricao):
+    def read_servico(cls, pkcodservico):
 
-        servico = cls.get_or_none(cls.descricao == descricao)
+        servico = cls.get_or_none(cls.pkcodservico == pkcodservico)
         if servico:
             return servico
             
